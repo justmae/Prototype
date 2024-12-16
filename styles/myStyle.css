@@ -1,0 +1,53 @@
+.card-img {
+    width: 45%;
+}
+
+#togglePassword {
+    position: absolute;
+    margin-top: -48px;
+    z-index: 3;
+}
+
+.btn-login {
+    font-size: 0.9rem;
+    letter-spacing: 0.05rem;
+    padding: 0.75rem 1rem;
+}
+
+.image {
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+button {
+    box-shadow: none !important;
+}
+
+.custom-select {
+    background-image: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M8 10.793l4.146-4.147a.5.5 0 0 1 .708.708l-4.5 4.5a.5.5 0 0 1-.708 0l-4.5-4.5a.5.5 0 1 1 .708-.708L8 10.793z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.5rem center;
+    padding-right: 1.5rem;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: #f74d84;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #f2b2cc;
+}
+
+.breadcrumb {
+    background: none !important;
+}

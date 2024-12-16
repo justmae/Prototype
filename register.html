@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Precision Pork</title>
+	
+    <!-- CDN -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Datatable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <link href="https://cdn.datatables.net/v/dt/dt-2.0.1/b-3.0.0/r-3.0.0/datatables.min.css" rel="stylesheet">
+    <script src="https://cdn.datatables.net/v/dt/dt-2.0.1/b-3.0.0/r-3.0.0/datatables.min.js" defer></script>
+    <!-- SWAL -->
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui/material-ui.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+    <!-- Style -->
+	<link rel="stylesheet" href="styles/myStyle.css">
+
+	<link rel="shortcut icon" href="images/brand.png" />
+</head>
+
+<style>
+    body {
+        background: linear-gradient(to right, #e79a92, #ffc6bf);
+    }
+</style>
+
+<script>
+    $(document).ready(function() {
+        $('#thisForm').on('submit', function(e) {
+            e.preventDefault();
+
+            Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            }).fire({
+                icon: "success",
+                title: "Precision Pork account created successfully"
+            }).then(() => window.location.href = 'login.html');
+        });
+    });
+</script>
+
+<body>
+	<div class="container">
+        <div class="row mt-5">
+            <div class="col-lg-10 col-xl-9 mx-auto d-flex justify-content-center">
+                <img src="images/pp_logo.png" alt="Precision Pork" class="image">
+            </div>
+            <div class="col-lg-10 col-xl-9 mx-auto" style="margin-top: -30px;">
+                <div class="card flex-row my-5 border-0 shadow overflow-hidden">
+                    <div class="card-img d-none d-md-flex" style="
+                    background: scroll center / cover url(images/cutie.jpg)"></div>
+                    <div class="card-body p-4 p-sm-5">
+                        <div class="card-title text-center mb-4">
+                            <h5 class="fw-bold fs-3">Register</h5>
+                            <p class="fw-light fs-6">Get your free Precision Pork account now.</p>
+                        </div>
+                        <form id="thisForm">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="fName" name="fName" placeholder="" autofocus autocomplete="off">
+                                <label for="fName">First Name</label>
+                                <span class="text-danger error-text fName_error"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="lName" name="lName" placeholder="" autocomplete="off">
+                                <label for="lName">Last Name</label>
+                                <span class="text-danger error-text lName_error"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="frName" name="frName" placeholder="" autocomplete="off">
+                                <label for="frName">Farm Name</label>
+                                <span class="text-danger error-text frName_error"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control" id="email" name="email" placeholder="" autocomplete="off">
+                                <label for="email">Email address</label>
+                                <span class="text-danger error-text email_error"></span>
+                            </div>
+                            <hr>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="password" name="password" placeholder="" autocomplete="off">
+                                <label for="password">Password</label>
+                                <span class="text-danger error-text password_error"></span>
+                            </div>
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control" id="passwordC" name="passwordC" placeholder="" autocomplete="off">
+                                <label for="passwordC">Confirm Password</label>
+                                <span class="text-danger error-text passwordC_error"></span>
+                            </div>
+                            <div class="d-grid mb-2">
+                                <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Register</button>
+                            </div>
+                            <p class="d-block text-center mt-2 small">Have an account ? <a href="login.html">Sign In</a></p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Precision Pork</title>
+	
+    <!-- CDN -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+	<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script> -->
+    <!-- Datatable -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+    <!-- <link href="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.2/b-3.0.1/b-html5-3.0.1/b-print-3.0.1/date-1.5.2/datatables.min.css" rel="stylesheet">
+ 	<script src="https://cdn.datatables.net/v/dt/jq-3.7.0/dt-2.0.2/b-3.0.1/b-html5-3.0.1/b-print-3.0.1/date-1.5.2/datatables.min.js" defer></script> -->
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.3/b-3.0.1/b-html5-3.0.1/b-print-3.0.1/date-1.5.2/datatables.min.css" rel="stylesheet">
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+	<script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.0.3/b-3.0.1/b-html5-3.0.1/b-print-3.0.1/date-1.5.2/datatables.min.js" defer></script>
+
+	<!-- Chart JS -->
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- SWAL -->
+    <link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-material-ui/material-ui.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
+
+    <!-- Style -->
+	<link rel="stylesheet" href="vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+	<link rel="stylesheet" href="styles/style.css">
+
+	<link rel="shortcut icon" href="images/brand.png" />
+
+	<!-- image crop -->
+	<link rel="stylesheet" href="vendors/ijaboCropTool/ijaboCropTool.min.css">
+	<script src="vendors/ijaboCropTool/ijaboCropTool.min.js"></script>
+</head>
+
+<style>
+    .breadcrumb {
+        background: none;
+    }
+</style>
+
+<script>
+    $(document).ready(function(){
+        $(document).on('click', '#exit, #cross', function() {
+            $('#modalView').modal('hide');
+            $('#pig_ID').val('');
+        });
+
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'long', day: '2-digit' };
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        var archiveData = [
+            { name: "Pig X", pig_sex: "Male", pig_category: "Finisher", pig_status: "Sold", archive_date: "2024-09-23", pig_ID: 1 },
+            { name: "Pig Y", pig_sex: "Female", pig_category: "Finisher", pig_status: "Sold", archive_date: "2024-06-01", pig_ID: 2 },
+            { name: "Pig Z", pig_sex: "Male", pig_category: "Finisher", pig_status: "Sold", archive_date: "2024-03-21", pig_ID: 3 }
+        ];
+
+        var archiveTable = $('#archiveTable').DataTable({
+            paging: true,
+            pageLength: 10,
+            sort: false,
+            data: archiveData,
+            columns: [
+                { data: null,
+                    render: function(data, type, row, meta) {
+                        return meta.row + 1;
+                    }
+                },
+                { data: 'name' },
+                { data: 'pig_sex' },
+                { data: 'pig_category' },
+                { data: 'pig_status' },
+                { data: 'archive_date' },
+                { data: 'pig_ID',
+                    "render": function(data, type, row) {
+                        return '<a class="btn btn-sm btn-inverse-info viewArchive" id="' + data + '"><i class="fa fa-arrows-alt"></i> View</a>';
+                    }
+                }
+            ],
+            initComplete: function(settings, json) {
+                $('#archiveTable th').addClass('text-left');
+            },
+            rowCallback: function(row, data, index) {
+                $(row).find("td").addClass("align-middle");
+                $(row).find("td").addClass("text-left");
+                $(row).find("td:last-child").addClass("text-center");
+            }
+        });
+    });
+</script>
+
+<body>
+	<div class="container-scroller">
+		<nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
+                <a class="navbar-brand brand-logo" href="dashboard.html"><img src="images/pp_logo.png" alt="logo" style="width:200px; height:35px;"/></a>
+                <a class="navbar-brand brand-logo-mini" href="dashboard.html"><img src="images/brand.png" alt="logo" style="width:35px; height:35px;"/></a>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                    <span class="fa fa-bars"></span>
+                </button>
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item dropdown d-flex mr-4 ">
+                        <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center" id="notificationDropdown" href="#" data-toggle="dropdown">
+                        <i class="fa fa-cog"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+                        <p class="mb-0 font-weight-normal float-left dropdown-header">Settings</p>
+                        <a class="dropdown-item preview-item" href="profile.html">               
+                            <i class="fa fa-user"></i> Profile
+                        </a>
+                        <a class="dropdown-item preview-item" href="login.html">
+                            <i class="fa fa-sign-out"></i> Logout
+                        </a>
+                        </div>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                <span class="fa fa-bars"></span>
+                </button>
+            </div>
+        </nav>
+		<div class="container-fluid page-body-wrapper">
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <div class="user-profile">
+                    <div class="user-image">
+                        <img src="images/profile.jpg" class="avatar-photo">
+                    </div>
+                    <div class="user-name">
+                        Administrator One
+                    </div>
+                    <div class="user-designation">
+                        Administrator
+                    </div>
+                </div>
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">
+                        <i class="fa fa-dashboard menu-icon"></i>
+                        <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#pig" aria-expanded="false" aria-controls="pig">
+                            <i class="fa fa-github-alt menu-icon"></i>
+                            <span class="menu-title">Pig Manager</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="pig">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="pigs.html">All Pigs</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="archives.html">Archive</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                       <a class="nav-link" data-toggle="collapse" href="#feed" aria-expanded="false" aria-controls="feed">
+                           <i class="fa fa-calendar menu-icon"></i>
+                           <span class="menu-title">Feed Manager</span>
+                           <i class="menu-arrow"></i>
+                       </a>
+                       <div class="collapse" id="feed">
+                           <ul class="nav flex-column sub-menu">
+                               <li class="nav-item"> <a class="nav-link" href="todays.html">Today's Feed</a></li>
+                               <li class="nav-item"> <a class="nav-link" href="plans.html">Feed Plan</a></li>
+                               <li class="nav-item"> <a class="nav-link" href="inventory.html">Inventory</a></li>
+                           </ul>
+                       </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#event" aria-expanded="false" aria-controls="event">
+                            <i class="fa fa-tasks menu-icon"></i>
+                            <span class="menu-title">Events</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="event">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="health.html">Health Monitor</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="pregnancy.html">Pregnancy Monitor</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#transaction" aria-expanded="false" aria-controls="transaction">
+                            <i class="fa fa-money menu-icon"></i>
+                            <span class="menu-title">Transactions</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="transaction">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="sales.html">Sales</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="collapse" href="#setup" aria-expanded="false" aria-controls="setup">
+                            <i class="fa fa-list menu-icon"></i>
+                            <span class="menu-title">Farm Setup</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="setup">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link" href="feeds.html">Feeds</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="medications.html">Medications</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="facilities.html">Facilities</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-xl-12 d-flex justify-content-between">
+                                <div>
+                                    <h4 class="font-weight-bold text-dark">Pig Archive</h4>
+                                    <p class="font-weight-normal mb-2 text-muted"><?php echo date("F j, Y"); ?></p>
+                                </div>
+                                <div aria-label="breadcrumb">
+                                    <ul class="breadcrumb">
+                                        <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                                        <li class="breadcrumb-item active" aria-current="page">Pig Archive</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card flex-row my-3 shadow overflow-hidden">
+                                    <div class="card-body">
+                                        <div class="table-responsive pt-3">
+                                            <table class="table table-hover" id="archiveTable" style="width:100%">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Name</th>
+                                                        <th>Gender</th>
+                                                        <th>Pig Category</th>
+                                                        <th>Archive Reason</th>
+                                                        <th>Archive Date</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer class="footer">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © TechTriad 2024</span>
+                    </div>
+                </footer>
+            </div>
+		</div>
+	</div>
+</body>
+<!-- Script -->
+<script src="vendors/base/vendor.bundle.base.js"></script>
+<script src="scripts/off-canvas.js"></script>
+<script src="scripts/hoverable-collapse.js"></script>
+<script src="scripts/template.js"></script>
+<script src="vendors/select2/select2.min.js"></script>
+<script src="scripts/select2.js"></script>
+</html>
